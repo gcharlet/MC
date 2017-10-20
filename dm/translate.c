@@ -44,7 +44,7 @@ clause translate(int n, int k){
       c1->next = new_clause();
       c1 = c1->next;
     }
-    for(int i = 0; i <= k; i++){
+    for(int i = 0; i < k; i++){
       if(i==0) {
 	l1 = new_litteral(u, i, 1);
 	c1->first = l1;
@@ -52,7 +52,7 @@ clause translate(int n, int k){
 	l1->next = new_litteral(u, i, 1);
 	l1 = l1->next;
       }
-      for(int j = i + 1; j <= k; j++){
+      for(int j = i + 1; j < k; j++){
 	c1->next = new_clause();
 	c1 = c1->next;
 	l2 = new_litteral(u, i, -1);
@@ -89,7 +89,8 @@ clause translate(int n, int k){
       l5 = l5->next;
     }
 
-    for(int i = 1; i <= k; i++){
+    //
+    for(int i = 1; i < k; i++){
       if(sat4 == NULL){
 	c4 = new_clause();
 	sat4 = c4;
@@ -145,7 +146,7 @@ void free_sat(clause sat){
 
 void create_fichier(clause sat, int n, int k){
   FILE *f = fopen("fichier_sat", "w+");
-  fprintf(f, "p cnf %d %d\n", n+n*k, n+n*(k*(k+1)/2)+n*(n-1)/2+n*k+2);
+  fprintf(f, "p cnf %d %d\n", n+n*k, n+n*(k*(k-1)/2)+n*(n-1)/2+n*k+2);
   while(sat != NULL){
     litteral l = sat->first;
     while(l != NULL){
