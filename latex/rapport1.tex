@@ -1,0 +1,120 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[frenchb]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{minted} %compiler avec la commande -shell-escape
+\usepackage{graphicx}
+
+%% Todo List
+\usepackage{enumitem,amssymb}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\newcommand{\done}{\rlap{$\square$}{\raisebox{2pt}{\large\hspace{1pt}\cmark}}%
+\hspace{-2.5pt}}
+\newcommand{\wontfix}{\rlap{$\square$}{\large\hspace{1pt}\xmark}}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\setlength{\parskip}{.5em}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+%-------------------------------------------------------------------------------
+% TITLE PAGE
+%-------------------------------------------------------------------------------
+
+\title
+{
+	\LARGE{Problème HAC}
+	\HRule \\ [0.5cm]
+	\LARGE \textbf{\uppercase{Complexité et Calculabilité}}
+	\HRule \\ [0.5cm]
+}
+
+\author{Guillaume CHARLET \\ Kenji FONTAINE}
+
+\begin{document}
+
+\null  % Empty line
+\nointerlineskip  % No skip for prev line
+\vfill
+\let\snewpage \newpage
+\let\newpage \relax
+\maketitle
+\let \newpage \snewpage
+\vfill
+\break % page break
+
+%-------------------------------------------------------------------------------
+% Table of Contents
+%-------------------------------------------------------------------------------
+
+\tableofcontents
+\newpage
+
+%-------------------------------------------------------------------------------
+% Introduction
+%-------------------------------------------------------------------------------
+
+\section{Description du problème}
+Dans un graphe G, un arbre couvrant est un arbre consituté uniquement d'arêtes de G et contenant tous les sommets de G. Ces arbres sont enracinés; un sommet est distingué et appelé la racine de l'arbre. La profondeur d'un tel arbre est égale à la distance maximale d'un sommet à la racine. Le problème est défini comme tel : \\
+\textbf{Entrée :} Un graphe non-orienté G et un entier k. \\
+\textbf{Sortie :} Existe-t-il un arbre couvrant de G de hauteur k?  
+
+%-------------------------------------------------------------------------------
+% Partie 2
+%-------------------------------------------------------------------------------
+
+\section{Partie 2 : HAC est NP-difficile}
+
+todo
+
+%-------------------------------------------------------------------------------
+% Partie 3
+%-------------------------------------------------------------------------------
+
+\section{Réduction de HAC vers SAT}
+
+Exprimons les contraintes suivantes : \\
+\begin{itemize}
+
+\item Pour chaque sommet v ∈ V , il y a un unique entier h t.q. xv,h est vrai.
+\item Il y a un unique sommet v t.q. d(v) = 0 (“v est la racine”).
+\item Il y a au moins un sommet v t.q. d(v) = k.
+\item Pour chaque sommet v, si d(v) > 0, alors il existe un sommet u tel que uv ∈ E et d(u) = d(v) − 1 (“le sommet u est un parent potentiel de v dans l’arbre”).
+\end{itemize}
+
+%-------------------------------------------------------------------------------
+% Partie 3
+%-------------------------------------------------------------------------------
+
+\section{Partie 3 : Entrées-sorties synchrones}
+
+todo
+
+%-------------------------------------------------------------------------------
+% Partie 4
+%-------------------------------------------------------------------------------
+
+\section{Partie 4 : Format des graphes}
+
+todo
+
+%-------------------------------------------------------------------------------
+% Partie 5
+%-------------------------------------------------------------------------------
+
+\section{Partie 5 : Solveur SAT}
+
+todo
+
+%-------------------------------------------------------------------------------
+% End
+%-------------------------------------------------------------------------------
+
+\end{document}
