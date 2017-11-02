@@ -5,6 +5,7 @@
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{minted} %compiler avec la commande -shell-escape
+\usepackage{amssymb}
 \usepackage{graphicx}
 
 %% Todo List
@@ -64,7 +65,7 @@
 \section{Description du problème}
 Dans un graphe G, un arbre couvrant est un arbre consituté uniquement d'arêtes de G et contenant tous les sommets de G. Ces arbres sont enracinés; un sommet est distingué et appelé la racine de l'arbre. La profondeur d'un tel arbre est égale à la distance maximale d'un sommet à la racine. Le problème est défini comme tel : \\
 \textbf{Entrée :} Un graphe non-orienté G et un entier k. \\
-\textbf{Sortie :} Existe-t-il un arbre couvrant de G de hauteur k?  
+\textbf{Sortie :} Existe-t-il un arbre couvrant de G de hauteur k?
 
 %-------------------------------------------------------------------------------
 % Partie 2
@@ -81,14 +82,54 @@ todo
 \section{Réduction de HAC vers SAT}
 
 Exprimons les contraintes suivantes : \\
-\begin{itemize}
+\begin{enumerate}
 
-\item Pour chaque sommet v ∈ V , il y a un unique entier h t.q. xv,h est vrai.
-\item Il y a un unique sommet v t.q. d(v) = 0 (“v est la racine”).
-\item Il y a au moins un sommet v t.q. d(v) = k.
+\item Pour chaque sommet v ∈ V, il y a un unique entier h tq $x_{v,h}$ est vrai.
+\item Il y a un unique sommet v tq d(v) = 0 (“v est la racine”).
+\item Il y a au moins un sommet v tq d(v) = k.
 \item Pour chaque sommet v, si d(v) > 0, alors il existe un sommet u tel que uv ∈ E et d(u) = d(v) − 1 (“le sommet u est un parent potentiel de v dans l’arbre”).
-\end{itemize}
+\end{enumerate}
 
+\begin{enumerate}
+%%%%% CONTRAINTE 1 %%%%%
+\item
+Pour cette contrainte, nous avons choisi de séparer le problème en deux.
+Dans un premier temps, nous avons exprimé le fait qu'il y ait au moins un entier
+h tq $x_{v, h}$ est vrai. Pour cela, nous appliquons un OU logique entre tous les
+sommets du graphe G et ce, pour chaque valeur allant de 0 à k. Ceci se traduisant
+par les clauses suivantes :
+\begin{center}
+$\bigwedge\limits_{v∈V}^{} \bigvee\limits_{i=0}^{k} x_{v,i}$
+\end{center}
+
+Puis nous avons exprimé le fait qu'il n'y ait au plus qu'un seul entier h tq
+$x_{v, h}$ est vrai. Nous exprimons cela par un NON ET logique entre toutes les
+paires de sommets différents du graphe G. En appliquant la loi de De Morgan, nous
+arrivons aux clauses suivantes :
+\begin{center}
+$\bigwedge\limits_{v∈V}^{} \bigwedge\limits_{i=0}^{k} \bigwedge\limits_{j=i+1}^{k-1} \neg x_{v,i} \vee \neg x_{v,j} $
+\end{center}
+
+%%%%% CONTRAINTE 2 %%%%%
+\item
+De façon similaire à la contrainte précédente, nous avons séparé ce problème en
+deux. Tout d'abord nous exprimons le fait qu'il y ait au moins une racine, puis
+le fait qu'il n'y ait qu'une seule racine. Ce qui nous donne les clauses : \\
+\begin{center}
+$\bigvee\limits_{v∈V}^{} x_{v,0} $
+\end{center}
+
+\begin{center}
+$\bigwedge\limits_{u!=v∈V}^{} \neg x_{u,0} \vee \neg x_{v,0}$
+\end{center}
+
+
+
+
+
+
+
+\end{enumerate}
 %-------------------------------------------------------------------------------
 % Partie 3
 %-------------------------------------------------------------------------------
