@@ -123,11 +123,23 @@ $\bigvee\limits_{v∈V}^{} x_{v,0} $
 $\bigwedge\limits_{u!=v∈V}^{} \neg x_{u,0} \vee \neg x_{v,0}$
 \end{center}
 
+%%%%% CONTRAINTE 3 %%%%%
+\item
+Cette contrainte se traduit trivialement en clause, il nous suffit d'appliquer 
+un OU logique entre chacun des sommets du graphe pour une valeur donnée k.
+Soit : \\
+\begin{center}
+$\bigvee\limits_{v∈V}^{} x_{v,k} $
+\end{center}
 
-
-
-
-
+%%%%% CONTRAINTE 4 %%%%%
+\item
+Cette contrainte se traduit trivialement en clause, il nous suffit d'appliquer 
+un OU logique entre chacun des sommets du graphe pour une valeur donnée k.
+Soit : \\
+\begin{center}
+$\bigwedge\limits_{u,v∈V}^{} \bigwedge\limits_{i=1}^{k} \neg x_{v,i} \vee \neg x_{u,i-1}$
+\end{center}
 
 \end{enumerate}
 %-------------------------------------------------------------------------------
