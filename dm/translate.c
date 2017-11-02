@@ -15,6 +15,7 @@ typedef struct clause {
   struct clause *next;
 } *clause;
 
+//fonction d'instanciation d'un nouveau litteral
 litteral new_litteral(int x, int i, int etat){
   litteral l = malloc(sizeof(struct litteral));
   l->x = x;
@@ -24,6 +25,7 @@ litteral new_litteral(int x, int i, int etat){
   return l;
 }
 
+//fonction d'instanciation d'une nouvelle clause
 clause new_clause(){
   clause c = malloc(sizeof(struct clause));
   c->first = NULL;
@@ -31,9 +33,13 @@ clause new_clause(){
   return c;
 }
 
+//fonction qui prend en n sommets et k
+//fonction qui retourne une formule CNF SAT en fonction d'un Graphe
+//enfin de transformer le problème du dm en SAT
 clause translate(int n, int k){
   clause sat1, sat2, sat4 = NULL, c1, c2, c3, c4;
   litteral l1, l2, l3, l4, l5, l6;
+  //boucle principale sur le nombre de sommets
   for (int u = 1; u <= n; u++){
 
     //Pour chaque sommet v ∈ V, il y a un unique entier h t.q. xv,h est vrai
@@ -89,7 +95,9 @@ clause translate(int n, int k){
       l5 = l5->next;
     }
 
-    //
+    //Pour chaque sommet v, si d(v)>0, alors il existe un sommet u tel
+    //que uv ∈ E et d(u) = d(v) − 1 (“le sommet u est un parent potentiel
+    //de v dans l’arbre”)
     for(int i = 1; i <= k; i++){
       if(sat4 == NULL){
 	c4 = new_clause();
@@ -115,7 +123,7 @@ clause translate(int n, int k){
   return sat1;
 }
 
-void afficher_sat(clause sat, int n){
+void afficher_sat(clause sat){
   printf("litteral : {v{V}, i{0:k-1}, etat(1 ou -1)}\n");
   while(sat != NULL){
     litteral l = sat->first;
@@ -144,9 +152,9 @@ void free_sat(clause sat){
   }
 }
 
-void create_fichier(clause sat, int n, int k){
+void create_fichier(clause sat, int n, int nbVar, int nbClause){
   FILE *f = fopen("fichier_sat", "w+");
-  fprintf(f, "p cnf %d %d\n", n+n*k, n+n*(k*(k+1)/2)+n*(n-1)/2+n*k+2);
+  fprintf(f, "p cnf %d %d\n", nbVar, nbClause);
   while(sat != NULL){
     litteral l = sat->first;
     while(l != NULL){
@@ -164,13 +172,26 @@ int main(int argc, char* argv[]){
     printf("./transale k\n");
     return 0;
   }
-
+  clause sat;
   int n = orderG();
   int k = atoi(argv[1]);
+  int nbClause;
 
-  clause sat = translate(n, k);
-  //afficher_sat(sat, n);
-  create_fichier(sat, n, k);
+  if(n <= k){
+    sat = new_clause();
+    sat->first = new_litteral(1, 0, 1);
+    sat->next = new_clause();
+    sat->next->first = new_litteral(1, 0, -1);
+    n = 1;
+    k = 0;
+    nbClause = 2;
+  }else{
+    sat = translate(n, k);
+    nbClause = n+n*(k*(k+1)/2)+n*(n-1)/2+n*k+2;
+  }
+  
+  //afficher_sat(sat);
+  create_fichier(sat, n, n+n*k, nbClause);
   free_sat(sat);
   
   return 1;
