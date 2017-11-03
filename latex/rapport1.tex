@@ -63,8 +63,8 @@
 %-------------------------------------------------------------------------------
 
 \section{Description du problème}
-Dans un graphe G, un arbre couvrant est un arbre consituté uniquement d'arêtes de G et contenant tous les sommets de G. Ces arbres sont enracinés; un sommet est distingué et appelé la racine de l'arbre. La profondeur d'un tel arbre est égale à la distance maximale d'un sommet à la racine. Le problème est défini comme tel : \\
-\textbf{Entrée :} Un graphe non-orienté G et un entier k. \\
+Dans un graphe G, un arbre couvrant est un arbre constituté uniquement d'arêtes de G et contenant tous les sommets de G. Ces arbres sont enracinés; un sommet est distingué et appelé la racine de l'arbre. La profondeur d'un tel arbre est égale à la distance maximale d'un sommet à la racine. Le problème est défini comme tel : \\
+\textbf{Entrée :} Un graphe non orienté G et un entier k. \\
 \textbf{Sortie :} Existe-t-il un arbre couvrant de G de hauteur k?
 
 %-------------------------------------------------------------------------------
@@ -73,15 +73,39 @@ Dans un graphe G, un arbre couvrant est un arbre consituté uniquement d'arêtes
 
 \section{Partie 2 : HAC est NP-difficile}
 
-todo
+\begin{enumerate}
 
+\item %%% question 1 %%%
+
+Montrons qu'il existe une réduction polynomiale du problème Chemin hamiltonien
+vers HAC. Les données d'entrée sont les mêmes, chaque problème prenant en entrée
+un graphe G. Il nous faut donc copier les données d'un problème à l'autre, se
+faisant en temps linéaire. Le problème HAC requiert un entier supplémentaire,
+nous coûtant un temps logarithmique.\\
+Il nous faut donc maintenant montrer que toute instance positive (respectivement négatives)
+ du Chemin hamiltonien soit également positive (respectivement négative) chez HAC.
+Si un graphe admet un chemin hamiltonien, cela signifie que le graphe est connexe.
+De plus, nous pouvons en partant d'un sommet parcourir l'ensemble des sommets du
+graphe, en ne passant qu'une seule fois par chaque sommet. Ce qui nous permettrait
+de créer un arbre "ligne" de la même taille que celle du chemin hamiltonien. Et
+si un graphe n'admet pas de chemin hamiltonien, cela signifie que le graphe n'est
+pas connexe. Nous ne pouvons pas extraire un arbre couvrant d'un tel graphe.
+
+\item %%% question 2 %%%
+
+Nous avons vu en cours que le chemin hamiltonien appartenait à la classe NP complet
+et nous avons montré qu'il existait une réduction en temps polynomiale d'hamiltonien
+vers HAC. Le problème HAC est donc lui aussi un problème NP complet.
+
+\end{enumerate}
 %-------------------------------------------------------------------------------
 % Partie 3
 %-------------------------------------------------------------------------------
 
+\newpage
 \section{Réduction de HAC vers SAT}
 
-Exprimons les contraintes suivantes : \\
+Exprimons les contraintes suivantes :\\
 \begin{enumerate}
 
 \item Pour chaque sommet v ∈ V, il y a un unique entier h tq $x_{v,h}$ est vrai.
@@ -89,6 +113,7 @@ Exprimons les contraintes suivantes : \\
 \item Il y a au moins un sommet v tq d(v) = k.
 \item Pour chaque sommet v, si d(v) > 0, alors il existe un sommet u tel que uv ∈ E et d(u) = d(v) − 1 (“le sommet u est un parent potentiel de v dans l’arbre”).
 \end{enumerate}
+\vspace{0.5cm}
 
 \begin{enumerate}
 %%%%% CONTRAINTE 1 %%%%%
@@ -125,7 +150,7 @@ $\bigwedge\limits_{u!=v∈V}^{} \neg x_{u,0} \vee \neg x_{v,0}$
 
 %%%%% CONTRAINTE 3 %%%%%
 \item
-Cette contrainte se traduit trivialement en clause, il nous suffit d'appliquer 
+Cette contrainte se traduit trivialement en clause, il nous suffit d'appliquer
 un OU logique entre chacun des sommets du graphe pour une valeur donnée k.
 Soit : \\
 \begin{center}
@@ -134,37 +159,22 @@ $\bigvee\limits_{v∈V}^{} x_{v,k} $
 
 %%%%% CONTRAINTE 4 %%%%%
 \item
-Cette contrainte se traduit trivialement en clause, il nous suffit d'appliquer 
-un OU logique entre chacun des sommets du graphe pour une valeur donnée k.
-Soit : \\
+Pour cette contrainte, nous voulons que si d(v) > 0, une certaine propriété soit
+satisfaite. Autrement dit, si $x_{v, i}$ est faux, nous voulons que la clause
+soit vérifiée puisque celle-ci n'a pas de sens concret. Pour cela nous utilisons
+la négation de cette variable associée à un OU logique. De cette sorte, lorsque
+la variable est vraie, et donc que la condition d(v) > 0 est vérifiée, nous devons
+considérer la partie droite du OU. \\
+La seconde partie du OU logique représente l'existence d'un sommet u comme un
+parent potentiel de v dans le graphe. Autrement dit, notre OU logique sera
+vérifié lorsque $x_{u, i-1}$ est vraie.
+
+Nous amenant ainsi aux clauses suivantes : \\
 \begin{center}
-$\bigwedge\limits_{u,v∈V}^{} \bigwedge\limits_{i=1}^{k} \neg x_{v,i} \vee \neg x_{u,i-1}$
+$\bigwedge\limits_{u,v∈V}^{} \bigwedge\limits_{i=1}^{k} \neg x_{v,i} \vee x_{u,i-1}$
 \end{center}
 
 \end{enumerate}
-%-------------------------------------------------------------------------------
-% Partie 3
-%-------------------------------------------------------------------------------
-
-\section{Partie 3 : Entrées-sorties synchrones}
-
-todo
-
-%-------------------------------------------------------------------------------
-% Partie 4
-%-------------------------------------------------------------------------------
-
-\section{Partie 4 : Format des graphes}
-
-todo
-
-%-------------------------------------------------------------------------------
-% Partie 5
-%-------------------------------------------------------------------------------
-
-\section{Partie 5 : Solveur SAT}
-
-todo
 
 %-------------------------------------------------------------------------------
 % End
