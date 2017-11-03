@@ -5,7 +5,6 @@
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{minted} %compiler avec la commande -shell-escape
-\usepackage{amssymb}
 \usepackage{graphicx}
 
 %% Todo List
@@ -132,7 +131,7 @@ $x_{v, h}$ est vrai. Nous exprimons cela par un NON ET logique entre toutes les
 paires de sommets différents du graphe G. En appliquant la loi de De Morgan, nous
 arrivons aux clauses suivantes :
 \begin{center}
-$\bigwedge\limits_{v∈V}^{} \bigwedge\limits_{i=0}^{k} \bigwedge\limits_{j=i+1}^{k-1} \neg x_{v,i} \vee \neg x_{v,j} $
+$\bigwedge\limits_{v∈V}^{} \bigwedge\limits_{i=0}^{k-1} \bigwedge\limits_{j=i+1}^{k} \neg x_{v,i} \vee \neg x_{v,j} $
 \end{center}
 
 %%%%% CONTRAINTE 2 %%%%%
@@ -171,8 +170,13 @@ vérifié lorsque $x_{u, i-1}$ est vraie.
 
 Nous amenant ainsi aux clauses suivantes : \\
 \begin{center}
-$\bigwedge\limits_{u,v∈V}^{} \bigwedge\limits_{i=1}^{k} \neg x_{v,i} \vee x_{u,i-1}$
+$\bigwedge\limits_{v∈V}^{} \bigwedge\limits_{i=1}^{k} \neg x_{v,i} \bigvee\limits_{u∈V}^{} x_{u,i-1}$
 \end{center}
+
+\begin{center}
+$\forall V:\{u∈V:\{u:v\}∈E\}$
+\end{center}
+
 
 \end{enumerate}
 
